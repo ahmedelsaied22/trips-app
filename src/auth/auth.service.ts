@@ -7,7 +7,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { customAlphabet } from 'nanoid';
-import { Booking } from 'src/db/models/booking.model';
 import { User } from 'src/db/models/user.model';
 import {
   Email_Events_Enum,
@@ -22,7 +21,6 @@ import { JWTService } from 'src/db/utils/security/token';
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(Booking.name) private readonly bookingModel: Model<Booking>,
     private readonly jwtService: JWTService,
   ) {}
 
@@ -141,7 +139,7 @@ export class AuthService {
       payload: { id: userExist._id, email: userExist.email },
       options: {
         secret: process.env.SECRET_ACCESS_TOKEN as string,
-        expiresIn: '30 s',
+        expiresIn: '1 H',
       },
     });
 
@@ -152,13 +150,8 @@ export class AuthService {
         expiresIn: '7 D',
       },
     });
-
-    await this.userModel.updateOne(
-      { email },
-      {
-        refreshToken: refreshToken,
-      },
-    );
+    userExist.refreshToken = refreshToken;
+    userExist.save();
 
     return {
       data: {
@@ -188,6 +181,22 @@ export class AuthService {
       data: {
         accessToken,
       },
+    };
+  }
+
+  async logout(user: User) {
+    await this.userModel.updateOne(
+      { email: user.email },
+      {
+        refreshToken: '',
+        $inc: {
+          __v: 1,
+        },
+      },
+    );
+
+    return {
+      data: 'logged out successfully',
     };
   }
 }

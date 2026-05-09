@@ -1,9 +1,9 @@
 import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
-Schema({
+@Schema({
   timestamps: true,
-});
-
+})
 export class Trip {
   @Prop({
     type: String,
@@ -17,6 +17,12 @@ export class Trip {
     required: true,
   })
   description?: string;
+
+  @Prop({
+    type: Types.ObjectId,
+    required: true,
+  })
+  userId!: Types.ObjectId;
 
   @Prop({
     type: Number,
@@ -47,7 +53,7 @@ export class Trip {
     required: true,
     default: 0,
   })
-  availableSeats?: number;
+  availableSeats!: number;
 
   @Prop({
     type: [

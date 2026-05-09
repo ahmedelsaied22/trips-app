@@ -4,14 +4,14 @@ import { Trip } from './trip.model';
 import { User } from './user.model';
 
 export enum StatusEnum {
+  canceled = 'CANCELED',
   pending = 'PENDING',
   confirmed = 'CONFIRMED',
 }
 
-Schema({
+@Schema({
   timestamps: true,
-});
-
+})
 export class Booking {
   @Prop({
     type: Types.ObjectId,
@@ -48,8 +48,9 @@ export class Booking {
   @Prop({
     type: Number,
     required: true,
+    default: 1,
   })
-  numberOfPeople?: number;
+  numberOfPeople!: number;
 
   @Prop({
     type: String,

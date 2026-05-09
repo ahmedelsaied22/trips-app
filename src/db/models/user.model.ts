@@ -60,6 +60,7 @@ export class User {
 
   @Prop({
     type: String,
+    default: RoleEnum.USER,
   })
   role?: RoleEnum;
 

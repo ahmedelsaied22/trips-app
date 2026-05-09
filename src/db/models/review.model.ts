@@ -3,10 +3,9 @@ import { Types } from 'mongoose';
 import { Trip } from './trip.model';
 import { User } from './user.model';
 
-Schema({
+@Schema({
   timestamps: true,
-});
-
+})
 export class Review {
   @Prop({
     type: Types.ObjectId,

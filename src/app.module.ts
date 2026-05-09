@@ -5,6 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { TripsModule } from './trips/trips.module';
+import { BookingModule } from './booking/booking.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -20,6 +24,10 @@ import { AuthModule } from './auth/auth.module';
       },
     }),
     AuthModule,
+    UsersModule,
+    TripsModule,
+    BookingModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

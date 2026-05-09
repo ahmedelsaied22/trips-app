@@ -7,12 +7,13 @@ import {
   Controller,
   Post,
   Req,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ZodPipe } from 'src/db/common/pipes/zod.pipe';
 import { SignupSchema } from './validation/signup.validation';
-import { type AuthReq } from 'src/db/common/guards/authGuard';
+import { AuthGuard, type AuthReq } from 'src/db/common/guards/authGuard';
 export interface RequestBody {
   success: boolean;
   data: {
@@ -59,5 +60,12 @@ export class AuthController {
     const token = refreshToken.split(' ')[1];
 
     return await this.authService.refreshToken(token);
+  }
+
+  @Post('logout')
+  @UseGuards(AuthGuard)
+  async logout(@Req() req: AuthReq) {
+    const user = req.user;
+    return await this.authService.logout(user);
   }
 }

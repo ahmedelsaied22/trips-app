@@ -15,6 +15,6 @@ export class ZodPipe implements PipeTransform {
     if (!result.success) {
       throw new BadRequestException(result.error.issues);
     }
-    return result;
+    return result.data;
   }
 }

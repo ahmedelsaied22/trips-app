@@ -23,28 +23,34 @@ export class AuthGuard implements CanActivate {
     @InjectModel(User.name) private readonly useModel: Model<User>,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req: AuthReq = context.switchToHttp().getRequest();
-    const auth = req.headers['authorization'];
+    try {
+      const req: AuthReq = context.switchToHttp().getRequest();
+      const auth = req.headers['authorization'];
 
-    if (!auth?.startsWith(process.env.BEARER))
-      throw new BadRequestException('invalid tokne');
+      if (!auth!.startsWith(process.env.BEARER))
+        throw new BadRequestException('invalid token');
 
-    const token = auth.splite(' ')[1];
-    const payload: {
-      id: Types.ObjectId;
-      email: string;
-    } = await this.jwtService.verify({
-      token,
-      options: {
-        secret: process.env.SECRET_ACCESS_TOKEN,
-      },
-    });
-    const user = await this.useModel.findById(payload.id);
-    if (!user) throw new NotFoundException('user is deleted');
-    if (!user.isConfirmed) throw new BadRequestException('email not confirmed');
+      const token = auth.split(' ')[1];
+      if (!token) throw new BadRequestException('you should login first');
+      const payload: {
+        id: Types.ObjectId;
+        email: string;
+      } = await this.jwtService.verify({
+        token,
+        options: {
+          secret: process.env.SECRET_ACCESS_TOKEN,
+        },
+      });
+      const user = await this.useModel.findById(payload.id);
+      if (!user) throw new NotFoundException('user is deleted');
+      if (!user.isConfirmed)
+        throw new BadRequestException('email not confirmed');
 
-    req.token = token;
-    req.user = user;
-    return true;
+      req.token = token;
+      req.user = user;
+      return true;
+    } catch (error) {
+      throw new BadRequestException('authontication error => ' + error);
+    }
   }
 }

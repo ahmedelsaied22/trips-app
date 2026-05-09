@@ -4,6 +4,7 @@ import { SendEmail } from './send.email';
 export enum Email_Events_Enum {
   VERIFY_EMAIL = 'VERIFY_EMAIL',
   RESET_PASSWORD = 'RESET_PASSWORD',
+  CONFIRM_BOOKING = 'CONFIRM_BOOKING',
 }
 
 export class EmailEvents {
@@ -30,6 +31,13 @@ EmailEmitter.subscribe(
 
 EmailEmitter.subscribe(
   Email_Events_Enum.RESET_PASSWORD,
+  ({ to, subject, html }: { to: string; subject: string; html: string }) => {
+    SendEmail({ to, subject, html });
+  },
+);
+
+EmailEmitter.subscribe(
+  Email_Events_Enum.CONFIRM_BOOKING,
   ({ to, subject, html }: { to: string; subject: string; html: string }) => {
     SendEmail({ to, subject, html });
   },
