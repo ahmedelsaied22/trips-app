@@ -18,14 +18,12 @@ import {
 } from '@nestjs/common';
 
 import { TripsService } from './trips.service';
-import { AuthGuard, type AuthReq } from 'src/db/common/guards/authGuard';
-import { AdminGuard } from 'src/db/common/guards/adminGuard';
-// import { ZodPipe } from 'src/db/common/pipes/zod.pipe';
-// import { TripSchema } from './validation/createTrip.validation';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { uploadBufferToCloudinary } from 'src/db/utils/images/upload';
 import { Types } from 'mongoose';
-// import { Multer } from 'multer';
+import { CacheInterceptor } from '../db/common/interceptors/cache.interceptor';
+import { AuthGuard, type AuthReq } from '../db/common/guards/authGuard';
+import { uploadBufferToCloudinary } from '../db/utils/images/upload';
+import { AdminGuard } from '../db/common/guards/adminGuard';
 
 // export interface TripsReq {
 //   data: {
@@ -82,6 +80,7 @@ export class TripsController {
   }
 
   @Get('')
+  @UseInterceptors(CacheInterceptor)
   async getAllTrips() {
     return await this.tripsService.getAllTrips();
   }

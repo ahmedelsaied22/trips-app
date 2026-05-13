@@ -9,12 +9,14 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { User, UserDocument } from 'src/db/models/user.model';
-import { JWTService } from 'src/db/utils/security/token';
+import { User, UserDocument } from '../../models/user.model';
+import { JWTService } from '../../utils/security/token';
 
 export interface AuthReq extends Request {
   user: UserDocument | Partial<User>;
   token: string;
+  path: string;
+  query: string;
 }
 
 export class AuthGuard implements CanActivate {
