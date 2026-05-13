@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from 'src/db/models/user.model';
+import { User } from '../db/models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Trip } from 'src/db/models/trip.model';
+import { Trip } from '../db/models/trip.model';
 import { Model, Types } from 'mongoose';
 import {
   deleteImage,
   uploadBufferToCloudinary,
-} from 'src/db/utils/images/upload';
+} from '../db/utils/images/upload';
 
 @Injectable()
 export class TripsService {

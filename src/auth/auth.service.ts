@@ -7,15 +7,15 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { customAlphabet } from 'nanoid';
-import { User } from 'src/db/models/user.model';
+import { RequestBody } from './auth.controller';
+import { User } from '../db/models/user.model';
 import {
   Email_Events_Enum,
   EmailEmitter,
-} from 'src/db/utils/email/email.events';
-import { CompareHash, CreateHash } from 'src/db/utils/security/hash';
-import { RequestBody } from './auth.controller';
-import { template } from 'src/db/utils/email/generateHtml';
-import { JWTService } from 'src/db/utils/security/token';
+} from '../db/utils/email/email.events';
+import { JWTService } from '../db/utils/security/token';
+import { CompareHash, CreateHash } from '../db/utils/security/hash';
+import { template } from '../db/utils/email/generateHtml';
 
 @Injectable()
 export class AuthService {

@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { User } from 'src/db/models/user.model';
-import { CompareHash } from 'src/db/utils/security/hash';
+import { User } from '../db/models/user.model';
+import { CompareHash } from '../db/utils/security/hash';
 
 @Injectable()
 export class UsersService {
